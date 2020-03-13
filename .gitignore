@@ -3,3 +3,6 @@
 venv
 __pycache__
 *.db
+films_db.json
+add_movies.py 
+search.py
