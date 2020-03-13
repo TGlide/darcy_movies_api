@@ -18,4 +18,4 @@ class Movie(db.Model):
     registered_on = db.Column(db.DateTime, nullable=False)
 
     def __repr__(self):
-        return "<Movie '{}'>".format(self.moviename)
+        return "<Movie '{}'>".format(self.title)

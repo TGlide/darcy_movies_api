@@ -4,6 +4,8 @@ import datetime
 from app.main import db
 from app.main.model.movie import Movie
 
+from sqlalchemy import func, or_
+
 
 def save_new_movie(data):
     print(data)
@@ -56,8 +58,25 @@ def delete_a_movie(movie):
         return response_object, 404
 
 
-def get_all_movies():
-    return Movie.query.all()
+def get_all_movies(args):
+    movies = Movie.query
+
+    rating_order = args.get('rating_order', None)
+    title = args.get('title', None)
+
+    if rating_order == 'asc':
+        movies = movies.order_by(Movie.rating.asc())
+    elif rating_order == 'desc':
+        movies = movies.order_by(Movie.rating.desc())
+
+    if title:
+        #     query_by_title = movies.filter(Movie.title.like(f"%{title}%"))
+        #     query_by_imdb_title = movies.filter(
+        #         Movie.imdb_title.like(f"%{title}%"))
+        movies = movies.filter(or_(func.lower(Movie.title).contains(func.lower(
+            title)), func.lower(Movie.imdb_title).contains(func.lower(title))))
+
+    return movies.all()
 
 
 def get_a_movie(id):

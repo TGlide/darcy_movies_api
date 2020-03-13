@@ -11,12 +11,14 @@ _movie = MovieDto.movie
 
 
 @api.route('/')
+@api.param('rating_order', 'Order by rating, asc or dsc')
+@api.param('title', 'Search by title')
 class MovieList(Resource):
     @api.doc('list_of_registered_movies')
     @api.marshal_list_with(_movie, envelope='data')
     def get(self):
         """List all registered movies"""
-        return get_all_movies()
+        return get_all_movies(request.args)
 
     @api.response(201, 'Movie successfully created.')
     @api.doc('create a new movie')
