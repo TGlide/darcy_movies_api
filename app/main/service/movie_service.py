@@ -4,7 +4,7 @@ import datetime
 from app.main import db
 from app.main.model.movie import Movie
 
-from sqlalchemy import func, or_, sql
+from sqlalchemy import func, or_,  nullslast, desc, asc
 
 
 def save_new_movie(data):
@@ -63,12 +63,10 @@ def get_all_movies(args):
 
     rating_order = args.get('rating_order', None)
     title = args.get('title', None)
-
     if rating_order == 'asc':
-        movies = sql.expression.nullslast(movies.order_by(Movie.rating.asc()))
+        movies = movies.order_by(nullslast(asc(Movie.rating)))
     elif rating_order == 'desc':
-        movies = sql.expression.nullslast(movies.order_by(Movie.rating.desc()))
-
+        movies = movies.order_by(nullslast(desc(Movie.rating)))
     if title:
         #     query_by_title = movies.filter(Movie.title.like(f"%{title}%"))
         #     query_by_imdb_title = movies.filter(
