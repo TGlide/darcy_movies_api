@@ -14,6 +14,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+print(os.getenv('BOILERPLATE_ENV'))
+print(os.getenv('DATABASE_URL'))
 app = create_app(os.getenv('BOILERPLATE_ENV') or 'dev')
 app.register_blueprint(blueprint)
 
